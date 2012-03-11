@@ -1,0 +1,31 @@
+vlc-control
+===========
+
+Remote control of VLC, from another computer, which can handle DVD navigation
+via cursor-keys and Enter, plus a few more things.
+
+The bits missing from the web UI!
+
+
+Setup
+-----
+
+This script is written to Python 3.2 and uses curses.  It expects a UTF-8
+locale for some of the characters printed.
+
+It has been tested on MacOS.  OS success/failure reports welcome.
+
+Turn on the "RC" interface (also called "OLDRC") in VLC.
+Set an IP address and port to listen on in VLC's preferences.
+Eg, to listen on port 4321 for any IPv6 address, enter: [::]:4321
+
+Invoke this script with: `vlc-control -s my-vlc-server.hostname.example.org:4321`
+
+
+Problems
+--------
+
+I accept pull requests and issue reports via the github interfaces for such.
+
+https://github.com/syscomet/vlc-control/
+
