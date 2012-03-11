@@ -28,6 +28,8 @@ Limitations
 No file-selection or browsing UI: I still use the web UI for that.
 Patches welcome.
 
+Shift-<digit> assumes US keyboard layout.
+
 
 Problems
 --------
