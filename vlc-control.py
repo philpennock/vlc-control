@@ -38,7 +38,7 @@ def toggle(name, when_f, when_t):
     return when_t if TOGGLE_STATES[name] else when_f
   return doit
 
-COL_1, COL_2, COL_3, COL_4, COL_5 = 0, 17, 33, 48, 64
+COL_1, COL_2, COL_3, COL_4 = 0, 20, 40, 60
 
 class Counter(object):
   def __init__(self, n):
@@ -64,8 +64,8 @@ KEY_COMMANDS = dict(map(lambda l: (ord(l[0]), l), (
     KeyInfo('>', 'chapter_n', 'Next Chapter', int(COL_1_Y), COL_1, False),
     KeyInfo('[', 'title_p', 'Prev Title', int(COL_1_Y), COL_1, False),
     KeyInfo(']', 'title_n', 'Next Title', int(COL_1_Y), COL_1, False),
-    KeyInfo('{', 'prev', 'Prev Playlist', int(COL_1_Y), COL_1, False),
-    KeyInfo('}', 'next', 'Next Playlist', int(COL_1_Y), COL_1, False),
+    KeyInfo('{', 'prev', 'Prev in Playlist', int(COL_1_Y), COL_1, False),
+    KeyInfo('}', 'next', 'Next in Playlist', int(COL_1_Y), COL_1, False),
     KeyInfo('w', 'key key-jump-long', 'Back long', int(COL_1_Y), COL_1, False),
     KeyInfo('e', 'key key-jump-medium', 'Back medium', int(COL_1_Y), COL_1, False),
     KeyInfo('r', 'key key-jump-short', 'Back short', int(COL_1_Y), COL_1, False),
@@ -80,11 +80,17 @@ KEY_COMMANDS = dict(map(lambda l: (ord(l[0]), l), (
     KeyInfo('m', 'key key-vol-mute', 'Mute', int(COL_2_Y), COL_2, False),
     KeyInfo('a', 'key key-audio-track', 'Audio Track', int(COL_2_Y), COL_2, False),
     KeyInfo('s', 'key key-subtitle-track', 'Subtitles', int(COL_2_Y), COL_2, False),
+    KeyInfo(',', 'slower', 'Rate: slower', int(COL_2_Y), COL_2, False),
+    KeyInfo('.', 'normal', 'Rate: normal', int(COL_2_Y), COL_2, False),
+    KeyInfo('/', 'faster', 'Rate: faster', int(COL_2_Y), COL_2, False),
+    KeyInfo('F', 'frame', 'Rate: Frame', int(COL_2_Y), COL_2, False),
 
     KeyInfo('f', 'fullscreen', 'Fullscreen', int(COL_3_Y), COL_3, False),
     KeyInfo('M', 'key key-disc-menu', 'Menu', int(COL_3_Y), COL_3, False),
     KeyInfo('S', 'stats', 'Stats', int(COL_3_Y), COL_3, True),
     KeyInfo('T', ('get_title', 'get_time', 'get_length'), 'Title', int(COL_3_Y), COL_3, True),
+    KeyInfo('I', 'info', 'Info', int(COL_3_Y), COL_3, True),
+    KeyInfo('P', 'playlist', 'Playlist', int(COL_3_Y), COL_3, True),
     KeyInfo('?',
       toggle('interface', 'key key-intf-hide', 'key key-intf-show'),
       'Interface', int(COL_3_Y), COL_3, False),
@@ -163,7 +169,7 @@ class VLCCommand(object):
       b = s.recv(4096)
       if not b:
         break
-      bufs.append(b.decode('ascii'))
+      bufs.append(b.decode('utf-8'))
     s.close()
     return ''.join(bufs)
 
@@ -185,6 +191,8 @@ def info_layout(screen):
       '1-9,0 to play bookmark 1-10')
   screen.addstr(INFO_OFFSET_DIGITS[0]+1, INFO_OFFSET_DIGITS[1],
       'Shift + 1-9,0 to set bookmarks')
+  screen.addstr(INFO_OFFSET_DIGITS[0]+2, INFO_OFFSET_DIGITS[1],
+      'Pause to stop frame-by-frame')
   screen.move(0, 0)
   screen.refresh()
 
@@ -210,16 +218,17 @@ def show_results(charcode, screen, results):
   screen.addstr(0, 2, 'VLC Control Interface', curses.A_BOLD)
   screen.addstr(0, 40, 'Press a key when done')
   screen.addstr(1, 4, KEY_COMMANDS[charcode].text)
+  screen.addstr(2, 35, 'PageUp/Down to scroll long results')
   (pad, pad_y_max, pad_x_max) = pad_for_text(results)
   if pad is None:
-    screen.addstr(3,4, 'No results from server')
+    screen.addstr(4,4, 'No results from server')
     screen.move(0, 0)
     screen.getch()
     info_layout(screen)
     return None
   screen.refresh()
 
-  top_y, top_x = 3, 0
+  top_y, top_x = 4, 0
   bot_y, bot_x = map(lambda n: n-1, screen.getmaxyx())
 
   page_y_delta = (bot_y - top_y) // 2
