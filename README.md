@@ -36,5 +36,5 @@ Problems
 
 I accept pull requests and issue reports via the github interfaces for such.
 
-https://github.com/syscomet/vlc-control/
+https://github.com/philpennock/vlc-control/
 
