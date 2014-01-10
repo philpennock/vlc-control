@@ -34,7 +34,17 @@ Shift-\<digit\> assumes US keyboard layout.
 Problems
 --------
 
+I am experimenting with use of gerrithub.io for pull requests and reviews in
+this repository:
+
+* <https://review.gerrithub.io/#/q/project:philpennock/vlc-control,n,z>
+* Clone, anonymous HTTP: <https://review.gerrithub.io/philpennock/vlc-control>
+* SSH Push URL: <ssh://review.gerrithub.io:29418/philpennock/vlc-control>
+  (requires account)
+
+<del>
 I accept pull requests and issue reports via the github interfaces for such.
 
-https://github.com/philpennock/vlc-control/
+<https://github.com/philpennock/vlc-control/>
+</del>
 
