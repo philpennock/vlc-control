@@ -1,4 +1,6 @@
-#!/usr/bin/env python3.2
+#!/usr/bin/env python3
+#
+# Licensed per LICENSE.txt; MIT-style
 
 """
 vlc_control: curses UI for *remote* control of VLC via RC interface
