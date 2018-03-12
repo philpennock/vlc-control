@@ -16,8 +16,10 @@ locale for some of the characters printed.
 It has been tested on MacOS.  OS success/failure reports welcome.
 
 Turn on the "RC" interface (also called "OLDRC") in VLC.
-Set an IP address and port to listen on in VLC's preferences.
-Eg, to listen on port 4321 for any IPv6 address, enter: `[::]:4321`
+Set an IP address and port to listen on in VLC's preferences.  
+<strike>Eg, to listen on port 4321 for any IPv6 address, enter: `[::]:4321`</strike>  
+By [code inspection](https://github.com/videolan/vlc/blob/master/modules/control/oldrc.c#L301-L306),
+I see that vlc now parses this input as a URL.  So enter: `tcp://:4321/`
 
 Invoke this script with: `vlc-control -s my-vlc-server.hostname.example.org:4321`
 
