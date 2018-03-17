@@ -23,6 +23,39 @@ I see that vlc now parses this input as a URL.  So enter: `tcp://:4321/`
 
 Invoke this script with: `vlc-control -s my-vlc-server.hostname.example.org:4321`
 
+### Examples
+
+#### VLC: Persistent configuration
+
+Launch VLC, open Preferences (`⌘-,` on macOS), click "Show All"; on the left,
+expand "Interfaces", "Main Interfaces", enable the "Remote control interface"
+checkbox (which will add `oldrc` to the viewable list of interfaces just above
+the checkboxes).  Then on the left, click "RC" and in the new control tab, for
+"TCP command input", enter the URL for listening.
+
+Enter `tcp://127.0.0.1:4321/` to listen on all IPs on the localhost, which is
+safest but does raise the question of "why", with other controls available.
+
+Enter `tcp://:4321/` to listen on all IPs on port 4321, which will allow
+anyone who can reach you over the network to control VLC without
+authentication.  Possibly useful on trusted networks to control a mini playing
+onto a nice screen, or when another laptop is hooked up to a TV.
+
+Then use `vlc-control.py -s 127.0.0.1:4321`, for remote hosts replacing the
+loopback IP with whatever hostname is needed to reach the running instance of
+VLC.
+
+#### VLC: Non-persistent, CLI enabling
+
+The above shows us that `oldrc` is an "extra interface", not an "interface",
+so we want the `--extraintf` parameter, not `-I`.
+Using `vlc -p oldrc --advanced` we can see the available options.
+Thus:
+
+```console
+$ vlc --extraintf=oldrc --rc-host tcp://127.0.0.1:4321/ "$filename"
+```
+
 
 Limitations
 -----------
